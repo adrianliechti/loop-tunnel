@@ -1,0 +1,11 @@
+# https://taskfile.dev
+
+version: "3"
+
+vars:
+  DOCKER_IMAGE: adrianliechti/loop-tunnel:0
+
+tasks:
+  push:
+    cmds:
+      - docker buildx build --push --platform linux/arm64,linux/amd64 --tag {{.DOCKER_IMAGE}} .
