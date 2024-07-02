@@ -1,31 +1,17 @@
-FROM alpine:3.15
+FROM debian:bullseye-slim
 
-RUN apk add --no-cache \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \
-    shadow \
-    libcap \
-    bash \
-    openssh \
-    sshfs
+    netcat \
+    openssh-server \
+    sshfs \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN useradd --system -u 1000 -g 0 --no-user-group --shell /bin/bash loop && \
-    passwd -d loop && \
-    usermod -U loop
-
-RUN mkdir -p /run/sshd && \
-    chown -R 0 /run/sshd && \
-    chmod g+w /etc/passwd /etc/group && \
-    chmod g+rwX /home && \
-    chmod g+rwX /run/sshd
-
-COPY --chown=root:root docker-entrypoint.sh /usr/bin/docker-entrypoint.sh
+RUN mkdir -p /run/sshd \
+    && passwd -d root
 
 COPY --chown=root:root ssh_config /etc/ssh/ssh_config
 COPY --chown=root:root sshd_config /etc/ssh/sshd_config
 
-RUN setcap 'cap_net_bind_service=+ep' /usr/sbin/sshd
-
-USER 1000
-
 ENTRYPOINT ["tini", "--"]
-CMD [ "/usr/bin/docker-entrypoint.sh" ]
+CMD [ "/usr/sbin/sshd", "-4", "-D" ]
