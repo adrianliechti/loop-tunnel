@@ -3,7 +3,7 @@
 version: "3"
 
 vars:
-  DOCKER_IMAGE: adrianliechti/loop-tunnel:0
+  DOCKER_IMAGE: ghcr.io/adrianliechti/loop-tunnel
 
 tasks:
   push:
