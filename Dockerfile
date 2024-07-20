@@ -1,10 +1,11 @@
-FROM debian:bullseye-slim
+FROM debian:bookworm-slim
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tini \
-    netcat \
+    openssh-client \
     openssh-server \
     sshfs \
+    netcat-traditional \
     && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /run/sshd \

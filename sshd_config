@@ -11,6 +11,6 @@ PermitEmptyPasswords yes
 AllowTcpForwarding yes
 AllowStreamLocalForwarding yes
 
-GatewayPorts yes
+GatewayPorts clientspecified
 
 Subsystem sftp /usr/lib/openssh/sftp-server
